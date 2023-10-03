@@ -94,7 +94,11 @@ fi
 # 
 ##############
 function assertLastCall {
-    if [ $? -ne 0 ]; then
-        exit $?
+    local exitCode=$?
+    if [ $exitCode -ne 0 ]; then
+        if [ "$1" != "" ]; then
+            echo "$1"
+        fi
+        exit $exitCode
     fi
 }
