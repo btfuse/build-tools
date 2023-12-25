@@ -79,9 +79,9 @@ function assetGitTagAvailable {
 ##############
 function assertVersion {
     if [ -z "$1" ]; then
-    echo "Version is required."
-    exit 2
-fi
+        echo "Version is required."
+        exit 2
+    fi
 }
 
 ##############
