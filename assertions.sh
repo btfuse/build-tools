@@ -59,10 +59,10 @@ function assertCleanRepo {
 # Asserts that the Git tag is not already used.
 # Kills the bash program otherwise.
 #
-# Usage: assetGitTagAvailable <tag>
+# Usage: assertGitTagAvailable <tag>
 # 
 ##############
-function assetGitTagAvailable {
+function assertGitTagAvailable {
     local tag="$1"
     if git tag -l | grep -q "^$$tag$"; then
         echo "Tag $tag already exists."
