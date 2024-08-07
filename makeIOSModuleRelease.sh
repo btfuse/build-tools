@@ -56,7 +56,7 @@ echo $BUILD_NO > ./ios/BUILD
 ./buildIOS.sh
 testIOS "Fuse iOS 17" "17.5" "iPhone 15" "$MODULE_NAME" "$MODULE_NAME"
 
-git add ios/VERSION ios/BUILD
+git add ios/VERSION ios/BUILD ios/$MODULE_NAME/VERSION.xcconfig
 git commit -m "iOS Release: $VERSION"
 git push
 git tag -a ios/$VERSION -m "iOS Release: $VERSION"
