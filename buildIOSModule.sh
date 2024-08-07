@@ -104,6 +104,8 @@ spushd ios
         -framework $simBuild/$MODULE_NAME.framework \
         -output ../dist/ios/$MODULE_NAME.xcframework
     assertLastCall
+
+    cp ../LICENSE ../dist/ios/$MODULE_NAME.xcframework/LICENSE
 spopd
 
 spushd dist/ios
