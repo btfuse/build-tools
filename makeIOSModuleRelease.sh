@@ -16,23 +16,11 @@
 
 # Cleanly builds an iOS module and publishes a new version
 
+# See build-tools/Env.sh for vars.sh requirement
+
 # Usage:
-#
-# MODULE_MARKET_NAME="Human Friendly Name"
-# MODULE_NAME="moduleName"
-# MODULE_DESCRIPTION="The best module ever"
-# MODULE_REPO_NAME="my-module"
-# MODULE_VERSION="1.2.3"
-#
-# source build-tools/buildAndroidModule.sh
-#
-# MODULE_MARKET_NAME is simply used for some prints
-# MODULE_NAME should be the name of the android module that needs to be built.
-# MODULE_NAME does not support sub-modules. The module should be available
-# at the root of the android project.
-# MODULE_DESCRIPTION is the description used for pod specs.
-# MODULE_REPO_NAME is the repository inside btfuse organization.
-# MODULE_VERSION is the new version/tag
+
+# source build-tools/makeIOSModuleRelease.sh
 
 # It's assumed that:
 #   - the ios workspace is located at in ./ios/
@@ -44,6 +32,7 @@
 source build-tools/assertions.sh
 source build-tools/DirectoryTools.sh
 source build-tools/tests.sh
+source build-tools/Env.sh
 
 assertMac "Mac is required for publishing"
 assertGitRepo

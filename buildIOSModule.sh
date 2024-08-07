@@ -17,6 +17,8 @@
 # Builds an iOS module and places it in
 # dist/ios/
 
+# See build-tools/Env.sh for vars.sh requirement
+
 # Usage:
 #
 # MODULE_MARKET_NAME="Human Friendly Name"
@@ -43,21 +45,7 @@
 source build-tools/assertions.sh
 source build-tools/DirectoryTools.sh
 source build-tools/Checksum.sh
-
-if [ -z "$BTFUSE_CODESIGN_IDENTITY" ]; then
-    echo "BTFUSE_CODESIGN_IDENTITY environment variable is required."
-    exit 2
-fi
-
-if [ -z "$MODULE_NAME" ]; then
-    echo "MODULE_NAME variable is required."
-    exit 2
-fi
-
-if [ -z "$MODULE_MARKET_NAME" ]; then
-    echo "MODULE_MARKET_NAME variable is required."
-    exit 2
-fi
+source build-tools/Env.sh
 
 assertMac "Mac is required to build Fuse $MODULE_MARKET_NAME iOS"
 
@@ -91,11 +79,16 @@ spushd ios
     simBuild=$(echo "$(xcodebuild -workspace $MODULE_NAME.xcworkspace -scheme $MODULE_NAME -configuration Debug -sdk iphonesimulator -showBuildSettings | grep -E '^\s*CONFIGURATION_BUILD_DIR =' | awk -F '= ' '{print $2}' | xargs)")
 
     echo "Signing iOS build..."
-    codesign -s $BTFUSE_CODESIGN_IDENTITY "$iosBuild/$MODULE_NAME.framework"
+    if [ -z "$BTFUSE_CODESIGN_IDENTITY" ]; then
+        echo "CodeSign identity not set. Not signing build."
+    else
+        codesign -s $BTFUSE_CODESIGN_IDENTITY "$iosBuild/$MODULE_NAME.framework"
+        assertLastCall
 
-    echo "Verifying iOS Build"
-    codesign -dvvvv "$iosBuild/$MODULE_NAME.framework"
-    assertLastCall
+        echo "Verifying iOS Build"
+        codesign -dvvvv "$iosBuild/$MODULE_NAME.framework"
+        assertLastCall
+    fi
 
     cp -r $iosBuild/$MODULE_NAME.framework.dSYM ../dist/ios/
 
