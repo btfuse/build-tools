@@ -38,6 +38,7 @@
 #   - it contains a VERSION file
 #   - it contains a BUILD file
 #   - That the workspace name and scheme have a consistent name
+#   - That the repo has a LICENSE file
 
 source build-tools/assertions.sh
 source build-tools/DirectoryTools.sh
