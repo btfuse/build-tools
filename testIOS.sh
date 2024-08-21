@@ -24,4 +24,11 @@ assertMac "Mac is required for iOS tests"
 
 source build-tools/Env.sh
 
-testIOS "Fuse iOS 17" "17.5" "iPhone 15" "$MODULE_NAME" "$MODULE_NAME"
+if [ -z "$1" ]; then
+    testIOS "Fuse iOS 17" "17.5" "iPhone 15" "$MODULE_NAME" "$MODULE_NAME"
+    # testIOS "Fuse iOS 18" "18.0" "iPhone 15" "$MODULE_NAME" "$MODULE_NAME" #iOS 18 simulator seems unstable atm (maybe it will work better with XCode 16?)
+else
+    testIOS "$1" "$2" "$3" "$MODULE_NAME" "$MODULE_NAME"
+fi;
+
+
