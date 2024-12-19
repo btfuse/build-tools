@@ -22,3 +22,14 @@
 function sha1_compute {
     echo -n "$(shasum -a 1 $1  | cut -d ' ' -f 1)" > $1.sha1.txt
 }
+
+##############
+# Calculates a SHA256 checksum and
+# writes to $filename.sha256.txt with the value
+#
+# Usage: sha1_compute <filePath>
+# 
+##############
+function sha256_compute {
+    echo -n "$(shasum -a 256 $1  | cut -d ' ' -f 1)" > $1.sha256.txt
+}
