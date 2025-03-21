@@ -22,6 +22,7 @@
 #
 # MODULE_MARKET_NAME="Human Friendly Name"
 # MODULE_NAME="moduleName"
+# MODULE_DIR="plugins/module"
 #
 # source build-tools/buildAndroidModule.sh
 #
@@ -49,30 +50,32 @@ if [ -z "$MODULE_MARKET_NAME" ]; then
     exit 2
 fi
 
-assertMac "Mac is required to build Fuse $MODULE_MARKET_NAME Android"
+spushd $MODULE_DIR
+    VERSION=$(< "./android/VERSION")
 
-VERSION=$(< "./android/VERSION")
+    echo "Building Fuse $MODULE_MARKET_NAME Android Framework $VERSION..."
 
-echo "Building Fuse $MODULE_MARKET_NAME Android Framework $VERSION..."
+    rm -rf ./dist/android
+    mkdir -p ./dist/android
 
-rm -rf ./dist/android
-mkdir -p ./dist/android
+    echo "Cleaning the workspace..."
+    spushd $ANDROID_PROJECT_DIR
+        $GRADLE :plugins:$MODULE_NAME:clean
+        assertLastCall
+        $GRADLE :plugins:$MODULE_NAME:build
+        assertLastCall
+    spopd
 
-echo "Cleaning the workspace..."
-spushd android
-    ./gradlew clean
+    rm -rf dist/android
+    mkdir -p dist/android
+
+    cp android/$MODULE_NAME/build/outputs/aar/*.aar dist/android/
     assertLastCall
-    ./gradlew :$MODULE_NAME:build
-    assertLastCall
 
-    cp $MODULE_NAME/build/outputs/aar/*.aar ../dist/android/
-    assertLastCall
+    spushd dist/android
+        mv $MODULE_NAME-debug.aar $MODULE_NAME-$VERSION-debug.aar
+        mv $MODULE_NAME-release.aar $MODULE_NAME-$VERSION.aar
+        sha1_compute $MODULE_NAME-$VERSION-debug.aar
+        sha1_compute $MODULE_NAME-$VERSION.aar
+    spopd
 spopd
-
-spushd dist/android
-    mv $MODULE_NAME-debug.aar $MODULE_NAME-$VERSION-debug.aar
-    mv $MODULE_NAME-release.aar $MODULE_NAME-$VERSION.aar
-    sha1_compute $MODULE_NAME-$VERSION-debug.aar
-    sha1_compute $MODULE_NAME-$VERSION.aar
-spopd
-
