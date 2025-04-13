@@ -64,8 +64,8 @@ function assertCleanRepo {
 ##############
 function assertGitTagAvailable {
     local tag="$1"
-    if git tag -l | grep -q "^$$tag$"; then
-        echo "Tag $tag already exists."
+    if git show-ref --tags --quiet --verify "refs/tags/$tag"; then
+        echo "Tag '$tag' already exists."
         exit 1
     fi
 }
