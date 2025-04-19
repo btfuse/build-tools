@@ -36,6 +36,8 @@
 #   - it contains a VERSION file
 #   - It has a gradle wrapper installed.
 
+echo "Deprecated"
+
 source build-tools/assertions.sh
 source build-tools/DirectoryTools.sh
 source build-tools/Checksum.sh
